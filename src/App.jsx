@@ -178,7 +178,7 @@ function App() {
               </nav>
               <div className="flex items-center space-x-2 text-gray-300">
                 <Phone className="w-4 h-4" />
-                <span className="font-semibold">(916) 555-TITAN</span>
+                <span className="font-semibold">(916) 269-3491</span>
               </div>
               <Button className="bg-green-500 hover:bg-green-400 text-black font-bold px-4 py-2 transform hover:scale-105 transition-all shadow-lg btn-sharp">
                 Free Estimate
@@ -207,7 +207,7 @@ function App() {
                 <a href="#contact" className="text-gray-300 hover:text-green-400 transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>Contact</a>
                 <div className="flex items-center space-x-2 text-gray-300 pt-2">
                   <Phone className="w-4 h-4" />
-                  <span className="font-semibold">(916) 555-TITAN</span>
+                  <span className="font-semibold">(916) 269-3491</span>
                 </div>
                 <Button className="bg-green-500 hover:bg-green-400 text-black font-bold w-fit btn-sharp">
                   Free Estimate
@@ -510,7 +510,7 @@ function App() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="(916) 555-0123" 
+                  placeholder="(916) 269-3491" 
                   className="bg-gray-800 border-white/20 text-white placeholder-gray-400 focus:border-green-500 focus:ring-green-500" 
                   required
                 />
@@ -590,7 +590,7 @@ function App() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-black text-white hover:bg-gray-800 px-8 py-4 text-lg transform hover:scale-105 transition-all font-bold shadow-xl btn-sharp">
               <Phone className="w-5 h-5 mr-2" />
-              Call (916) 555-TITAN
+              Call (916) 269-3491
             </Button>
             <Button size="lg" variant="outline" className="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-4 text-lg transform hover:scale-105 transition-all font-bold btn-sharp">
               Schedule Free Estimate
@@ -629,7 +629,7 @@ function App() {
               <div className="space-y-3 text-gray-400">
                 <div className="flex items-center space-x-2">
                   <Phone className="w-4 h-4" />
-                  <span>(916) 555-TITAN</span>
+                  <span>(916) 269-3491</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <MapPin className="w-4 h-4" />
