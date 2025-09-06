@@ -65,22 +65,46 @@ function App() {
     setIsSubmitting(true)
     setFormStatus({ type: '', message: '' })
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Prepare form data for submission
+      const submissionData = {
+        to: 'ryan@titancleanups.com',
+        from: formData.email,
+        subject: `New Service Request from ${formData.name}`,
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        services: formData.services.join(', '),
+        message: formData.message,
+        timestamp: new Date().toISOString()
+      }
+
+      // For now, simulate form submission
+      // In production, this would send to your form handler service
+      console.log('Form submission data:', submissionData)
+      
+      setTimeout(() => {
+        setFormStatus({ 
+          type: 'success', 
+          message: 'Thank you! We will contact you soon at ryan@titancleanups.com.' 
+        })
+        // Reset form
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          services: [],
+          message: ''
+        })
+        setIsSubmitting(false)
+      }, 1000)
+    } catch (error) {
       setFormStatus({ 
-        type: 'success', 
-        message: 'Thank you! We will contact you soon.' 
-      })
-      // Reset form
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        services: [],
-        message: ''
+        type: 'error', 
+        message: 'Sorry, there was an error sending your message. Please call (916) 269-3491 directly.' 
       })
       setIsSubmitting(false)
-    }, 1000)
+    }
   }
 
   const services = {
@@ -522,7 +546,7 @@ function App() {
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="your.email@example.com" 
+                  placeholder="your.email@titancleanups.com" 
                   className="bg-gray-800 border-white/20 text-white placeholder-gray-400 focus:border-green-500 focus:ring-green-500" 
                   required
                 />
