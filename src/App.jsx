@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from './components/ui/button'
 import { Card } from './components/ui/card'
 import { Input } from './components/ui/input'
@@ -20,6 +20,7 @@ function App() {
   const [activeService, setActiveService] = useState('lawn')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [showPhonePopup, setShowPhonePopup] = useState(false)
   
   // Contact form state
   const [formData, setFormData] = useState({
@@ -106,6 +107,19 @@ function App() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  // Function to scroll to contact form
+  const scrollToForm = () => {
+    const formElement = document.getElementById('contact-form')
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  // Function to show phone popup
+  const showPhoneNumber = () => {
+    setShowPhonePopup(true)
   }
 
   const services = {
@@ -254,11 +268,18 @@ function App() {
             Sacramento's trusted team for lawn care, exterior cleaning, and junk removal.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-green-500 hover:bg-green-400 text-black font-bold px-8 py-4 text-lg btn-sharp">
+            <Button 
+              onClick={showPhoneNumber}
+              className="bg-green-500 hover:bg-green-400 text-black font-bold px-8 py-4 text-lg btn-sharp"
+            >
               <Phone className="w-5 h-5 mr-2" />
               Call Now
             </Button>
-            <Button variant="outline" className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-black font-bold px-8 py-4 text-lg btn-sharp">
+            <Button 
+              onClick={scrollToForm}
+              variant="outline" 
+              className="border-2 border-white text-white bg-transparent hover:bg-white hover:text-black font-bold px-8 py-4 text-lg btn-sharp"
+            >
               Book Free Estimate
             </Button>
           </div>
@@ -507,7 +528,7 @@ function App() {
           </div>
           
           <Card className="p-8 bg-black border-white/20 card-depth">
-            <form onSubmit={handleFormSubmit} className="grid md:grid-cols-2 gap-6">
+            <form id="contact-form" onSubmit={handleFormSubmit} className="grid md:grid-cols-2 gap-6">
               {formStatus.message && (
                 <div className={`md:col-span-2 p-4 rounded-lg ${
                   formStatus.type === 'success' 
@@ -671,6 +692,34 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Phone Popup */}
+      {showPhonePopup && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowPhonePopup(false)}>
+          <div className="bg-gray-800 p-8 rounded-lg border border-white/20 card-depth max-w-sm mx-4" onClick={(e) => e.stopPropagation()}>
+            <div className="text-center">
+              <Phone className="w-12 h-12 text-green-400 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-white mb-2">Call Us Now</h3>
+              <p className="text-gray-400 mb-4">Ready to get started? Give us a call!</p>
+              <a 
+                href="tel:+19162693491" 
+                className="text-2xl font-bold text-green-400 hover:text-green-300 transition-colors"
+              >
+                (916) 269-3491
+              </a>
+              <div className="mt-6">
+                <Button 
+                  onClick={() => setShowPhonePopup(false)}
+                  variant="outline" 
+                  className="border-white/20 text-gray-300 hover:bg-white/10"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
