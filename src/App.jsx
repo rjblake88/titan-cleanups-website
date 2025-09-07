@@ -16,114 +16,6 @@ import galleryImage3 from './assets/gallery-space-reclamation.png'
 
 import './App.css'
 
-// OAuth configuration
-const OAUTH_CONFIG = {
-  clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-  clientSecret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
-  apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-  scope: 'https://www.googleapis.com/auth/calendar',
-  redirectUri: 'https://www.titancleanups.com'
-}
-
-// OAuth token management
-let accessToken = null
-let tokenExpiry = null
-
-const getAccessToken = async () => {
-  // Check if we have a valid token
-  if (accessToken && tokenExpiry && Date.now() < tokenExpiry) {
-    return accessToken
-  }
-
-  // Try to get token from localStorage
-  const storedToken = localStorage.getItem('google_access_token')
-  const storedExpiry = localStorage.getItem('google_token_expiry')
-  
-  if (storedToken && storedExpiry && Date.now() < parseInt(storedExpiry)) {
-    accessToken = storedToken
-    tokenExpiry = parseInt(storedExpiry)
-    return accessToken
-  }
-
-  // Need to authenticate
-  return await authenticateUser()
-}
-
-const authenticateUser = async () => {
-  return new Promise((resolve, reject) => {
-    // Create OAuth URL
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
-      `client_id=${OAUTH_CONFIG.clientId}&` +
-      `redirect_uri=${encodeURIComponent(OAUTH_CONFIG.redirectUri)}&` +
-      `scope=${encodeURIComponent(OAUTH_CONFIG.scope)}&` +
-      `response_type=code&` +
-      `access_type=offline&` +
-      `prompt=consent`
-
-    // Open popup for authentication
-    const popup = window.open(authUrl, 'google-auth', 'width=500,height=600')
-    
-    // Listen for the popup to close or receive the auth code
-    const checkClosed = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(checkClosed)
-        reject(new Error('Authentication cancelled'))
-      }
-    }, 1000)
-
-    // Listen for messages from the popup
-    const messageListener = async (event) => {
-      if (event.origin !== window.location.origin) return
-      
-      if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
-        clearInterval(checkClosed)
-        popup.close()
-        window.removeEventListener('message', messageListener)
-        
-        try {
-          const token = await exchangeCodeForToken(event.data.code)
-          resolve(token)
-        } catch (error) {
-          reject(error)
-        }
-      }
-    }
-    
-    window.addEventListener('message', messageListener)
-  })
-}
-
-const exchangeCodeForToken = async (code) => {
-  const response = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      client_id: OAUTH_CONFIG.clientId,
-      client_secret: OAUTH_CONFIG.clientSecret,
-      code: code,
-      grant_type: 'authorization_code',
-      redirect_uri: OAUTH_CONFIG.redirectUri
-    })
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to exchange code for token')
-  }
-
-  const data = await response.json()
-  
-  // Store token
-  accessToken = data.access_token
-  tokenExpiry = Date.now() + (data.expires_in * 1000)
-  
-  localStorage.setItem('google_access_token', accessToken)
-  localStorage.setItem('google_token_expiry', tokenExpiry.toString())
-  
-  return accessToken
-}
-
 function App() {
   const [activeService, setActiveService] = useState('lawn')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -167,66 +59,32 @@ function App() {
     }))
   }
 
-  // Handle form submission with Google Calendar integration
+  // Handle form submission with Formspree
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setFormStatus({ type: '', message: '' })
 
     try {
-      // Prepare calendar event data
-      const eventData = {
-        summary: `Free Estimate - ${formData.name}`,
-        description: `
-Customer Information:
-- Name: ${formData.name}
-- Phone: ${formData.phone}
-- Email: ${formData.email}
-- Services: ${formData.services.join(', ')}
-- Message: ${formData.message}
-
-Contact Details:
-Phone: ${formData.phone}
-Email: ${formData.email}
-        `.trim(),
-        start: {},
-        end: {}
-      }
-
-      // Smart timing logic
-      const now = new Date()
-      const currentHour = now.getHours()
-      const currentDay = now.getDay() // 0 = Sunday, 6 = Saturday
-      
-      let eventDate = new Date()
-      
-      // If after 5 PM or on weekend, schedule for next business day
-      if (currentHour >= 17 || currentDay === 0 || currentDay === 6) {
-        // Find next business day
-        do {
-          eventDate.setDate(eventDate.getDate() + 1)
-        } while (eventDate.getDay() === 0 || eventDate.getDay() === 6) // Skip weekends
-      }
-      
-      // Set as all-day event
-      const dateString = eventDate.toISOString().split('T')[0]
-      eventData.start = { date: dateString }
-      eventData.end = { date: dateString }
-
-      // Create calendar event using Google Calendar API with OAuth
-      const response = await fetch(`https://www.googleapis.com/calendar/v3/calendars/ryanjblake1988@gmail.com/events`, {
+      const response = await fetch('https://formspree.io/f/xkgvkqoz', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${await getAccessToken()}`
         },
-        body: JSON.stringify(eventData)
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          services: formData.services.join(', '),
+          message: formData.message,
+          _subject: `Free Estimate Request - ${formData.name}`,
+        }),
       })
 
       if (response.ok) {
         setFormStatus({ 
           type: 'success', 
-          message: 'Thank you! Your appointment has been scheduled and we will contact you soon.' 
+          message: `Thank you! We will contact you soon at ${formData.email}.` 
         })
         // Reset form
         setFormData({
@@ -237,21 +95,13 @@ Email: ${formData.email}
           message: ''
         })
       } else {
-        throw new Error('Failed to create calendar event')
+        throw new Error('Failed to submit form')
       }
     } catch (error) {
-      console.error('Error creating calendar event:', error)
+      console.error('Error submitting form:', error)
       setFormStatus({ 
         type: 'error', 
-        message: 'Thank you for your submission! We will contact you soon.' 
-      })
-      // Reset form even on error
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        services: [],
-        message: ''
+        message: 'There was an error submitting your request. Please try again or call us directly.' 
       })
     } finally {
       setIsSubmitting(false)
