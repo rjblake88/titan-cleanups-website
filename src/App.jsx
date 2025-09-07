@@ -66,7 +66,7 @@ function App() {
     setFormStatus({ type: '', message: '' })
 
     try {
-      const response = await fetch('https://formspree.io/f/xkgvkqoz', {
+      const response = await fetch('https://formspree.io/f/xkgvkqrr', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ function App() {
       if (response.ok) {
         setFormStatus({ 
           type: 'success', 
-          message: `Thank you! We will contact you soon at ${formData.email}.` 
+          message: 'Thank you! We will contact you soon.' 
         })
         // Reset form
         setFormData({
