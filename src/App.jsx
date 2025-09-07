@@ -21,6 +21,8 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [showPhonePopup, setShowPhonePopup] = useState(false)
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false)
+  const [showTermsOfService, setShowTermsOfService] = useState(false)
   
   // Contact form state
   const [formData, setFormData] = useState({
@@ -687,8 +689,24 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
-            <p>&copy; 2025 Titan Cleanups. All rights reserved.</p>
+          <div className="border-t border-gray-800 mt-8 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <p className="text-gray-500">&copy; 2025 Titan Cleanups. All rights reserved.</p>
+              <div className="flex space-x-6 text-sm">
+                <button 
+                  onClick={() => setShowPrivacyPolicy(true)}
+                  className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer"
+                >
+                  Privacy Policy
+                </button>
+                <button 
+                  onClick={() => setShowTermsOfService(true)}
+                  className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer"
+                >
+                  Terms of Service
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
@@ -715,6 +733,171 @@ function App() {
                 >
                   Close
                 </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Privacy Policy Popup */}
+      {showPrivacyPolicy && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowPrivacyPolicy(false)}>
+          <div className="bg-gray-800 rounded-lg border border-white/20 card-depth max-w-4xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-white">Privacy Policy</h2>
+                <Button 
+                  onClick={() => setShowPrivacyPolicy(false)}
+                  variant="outline" 
+                  className="border-white/20 text-gray-300 hover:bg-white/10"
+                >
+                  Close
+                </Button>
+              </div>
+              
+              <div className="space-y-6 text-gray-300 text-sm">
+                <p className="text-gray-400">Last updated: {new Date().toLocaleDateString()}</p>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">1. Information We Collect</h3>
+                  <p className="mb-3">When you use our services or contact us through our website, we may collect the following information:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>Personal information such as your name, phone number, and email address</li>
+                    <li>Service address and property details</li>
+                    <li>Communication preferences and service requests</li>
+                    <li>Payment information (processed securely through third-party providers)</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">2. How We Use Your Information</h3>
+                  <p className="mb-3">We use your information to:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>Provide lawn care, exterior cleaning, and junk removal services</li>
+                    <li>Schedule appointments and communicate about services</li>
+                    <li>Process payments and maintain service records</li>
+                    <li>Send service reminders and updates</li>
+                    <li>Improve our services and customer experience</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">3. Information Sharing</h3>
+                  <p className="mb-3">We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>With service providers who assist in our operations (payment processing, scheduling software)</li>
+                    <li>When required by law or to protect our rights and safety</li>
+                    <li>With your explicit consent</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">4. California Privacy Rights (CCPA)</h3>
+                  <p className="mb-3">As a California resident, you have the right to:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>Know what personal information we collect and how it's used</li>
+                    <li>Request deletion of your personal information</li>
+                    <li>Opt-out of the sale of personal information (we do not sell personal information)</li>
+                    <li>Non-discrimination for exercising your privacy rights</li>
+                  </ul>
+                  <p className="mt-3">To exercise these rights, contact us at ryan@titancleanups.com or (916) 269-3491.</p>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">5. Contact Information</h3>
+                  <div className="bg-gray-700 p-4 rounded-lg">
+                    <p><strong>Titan Cleanups</strong></p>
+                    <p>Email: ryan@titancleanups.com</p>
+                    <p>Phone: (916) 269-3491</p>
+                    <p>Service Area: Sacramento, CA and surrounding areas</p>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Terms of Service Popup */}
+      {showTermsOfService && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowTermsOfService(false)}>
+          <div className="bg-gray-800 rounded-lg border border-white/20 card-depth max-w-4xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-white">Terms of Service</h2>
+                <Button 
+                  onClick={() => setShowTermsOfService(false)}
+                  variant="outline" 
+                  className="border-white/20 text-gray-300 hover:bg-white/10"
+                >
+                  Close
+                </Button>
+              </div>
+              
+              <div className="space-y-6 text-gray-300 text-sm">
+                <p className="text-gray-400">Last updated: {new Date().toLocaleDateString()}</p>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">1. Services Provided</h3>
+                  <p className="mb-3">Titan Cleanups provides the following services in Sacramento, California and surrounding areas:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>Lawn care and yard maintenance</li>
+                    <li>Exterior cleaning services</li>
+                    <li>Junk and debris removal</li>
+                    <li>Seasonal yard preparation</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">2. Scheduling and Estimates</h3>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>Free estimates are provided for all services</li>
+                    <li>Appointments are scheduled based on availability and weather conditions</li>
+                    <li>We reserve the right to reschedule services due to inclement weather</li>
+                    <li>24-hour notice is appreciated for cancellations</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">3. Payment Terms</h3>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>Payment is due upon completion of services unless otherwise arranged</li>
+                    <li>We accept cash, check, and electronic payments</li>
+                    <li>Late payment fees may apply to overdue accounts</li>
+                    <li>Prices are subject to change with reasonable notice</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">4. Property Access and Safety</h3>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>Customer must provide safe access to work areas</li>
+                    <li>Customer is responsible for marking sprinkler systems, utilities, and fragile items</li>
+                    <li>Pets should be secured during service visits</li>
+                    <li>We are not responsible for damage to unmarked items or utilities</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">5. Liability and Insurance</h3>
+                  <p className="mb-3">Titan Cleanups carries general liability insurance. Our liability is limited to:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-4">
+                    <li>Direct damages caused by our negligence</li>
+                    <li>Maximum liability not to exceed the cost of services provided</li>
+                    <li>Claims must be reported within 48 hours of service completion</li>
+                    <li>We are not liable for pre-existing conditions or normal wear and tear</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h3 className="text-lg font-semibold text-white mb-3">6. Contact Information</h3>
+                  <div className="bg-gray-700 p-4 rounded-lg">
+                    <p><strong>Titan Cleanups</strong></p>
+                    <p>Email: ryan@titancleanups.com</p>
+                    <p>Phone: (916) 269-3491</p>
+                    <p>Service Area: Sacramento, CA and surrounding areas</p>
+                  </div>
+                </section>
               </div>
             </div>
           </div>
