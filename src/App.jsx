@@ -22,7 +22,7 @@ const OAUTH_CONFIG = {
   clientSecret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET,
   apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
   scope: 'https://www.googleapis.com/auth/calendar',
-  redirectUri: window.location.origin
+  redirectUri: 'https://www.titancleanups.com'
 }
 
 // OAuth token management
