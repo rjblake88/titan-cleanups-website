@@ -59,34 +59,32 @@ function App() {
     }))
   }
 
-  // Handle form submission
+  // Handle form submission with Formspree
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
     setFormStatus({ type: '', message: '' })
 
     try {
-      // Prepare form data for submission
-      const submissionData = {
-        to: 'ryan@titancleanups.com',
-        from: formData.email,
-        subject: `New Service Request from ${formData.name}`,
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        services: formData.services.join(', '),
-        message: formData.message,
-        timestamp: new Date().toISOString()
-      }
+      const response = await fetch('https://formspree.io/f/xkgvkqrr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          services: formData.services.join(', '),
+          message: formData.message,
+          _subject: `Free Estimate Request - ${formData.name}`,
+        }),
+      })
 
-      // For now, simulate form submission
-      // In production, this would send to your form handler service
-      console.log('Form submission data:', submissionData)
-      
-      setTimeout(() => {
+      if (response.ok) {
         setFormStatus({ 
           type: 'success', 
-          message: 'Thank you! We will contact you soon at ryan@titancleanups.com.' 
+          message: 'Thank you! We will contact you soon.' 
         })
         // Reset form
         setFormData({
@@ -96,13 +94,16 @@ function App() {
           services: [],
           message: ''
         })
-        setIsSubmitting(false)
-      }, 1000)
+      } else {
+        throw new Error('Failed to submit form')
+      }
     } catch (error) {
+      console.error('Error submitting form:', error)
       setFormStatus({ 
         type: 'error', 
-        message: 'Sorry, there was an error sending your message. Please call (916) 269-3491 directly.' 
+        message: 'There was an error submitting your request. Please try again or call us directly.' 
       })
+    } finally {
       setIsSubmitting(false)
     }
   }
@@ -534,7 +535,7 @@ function App() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="(916) 269-3491" 
+                  placeholder="(916) 555-0123" 
                   className="bg-gray-800 border-white/20 text-white placeholder-gray-400 focus:border-green-500 focus:ring-green-500" 
                   required
                 />
@@ -546,7 +547,7 @@ function App() {
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="your.email@titancleanups.com" 
+                  placeholder="ryan@titancleanups.com" 
                   className="bg-gray-800 border-white/20 text-white placeholder-gray-400 focus:border-green-500 focus:ring-green-500" 
                   required
                 />
