@@ -79,31 +79,97 @@ function App() {
         timestamp: new Date().toISOString()
       }
 
-      // For now, simulate form submission
-      // In production, this would send to your form handler service
-      console.log('Form submission data:', submissionData)
+      // Create Google Calendar event
+      await createCalendarEvent(submissionData)
       
-      setTimeout(() => {
-        setFormStatus({ 
-          type: 'success', 
-          message: 'Thank you! We will contact you soon at ryan@titancleanups.com.' 
-        })
-        // Reset form
-        setFormData({
-          name: '',
-          phone: '',
-          email: '',
-          services: [],
-          message: ''
-        })
-        setIsSubmitting(false)
-      }, 1000)
+      setFormStatus({ 
+        type: 'success', 
+        message: 'Thank you! We will contact you soon.' 
+      })
+      // Reset form
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        services: [],
+        message: ''
+      })
+      setIsSubmitting(false)
     } catch (error) {
+      console.error('Form submission error:', error)
       setFormStatus({ 
         type: 'error', 
         message: 'Sorry, there was an error sending your message. Please call (916) 269-3491 directly.' 
       })
       setIsSubmitting(false)
+    }
+  }
+
+  // Create Google Calendar event
+  const createCalendarEvent = async (data) => {
+    const API_KEY = 'AIzaSyAVkSxkDgJgevLnwg0cbgVsxdArDY_q8Dk'
+    const CALENDAR_ID = 'ryanjblake1988@gmail.com'
+    
+    // Determine event date based on current time
+    const now = new Date()
+    const currentHour = now.getHours()
+    let eventDate = new Date()
+    
+    // If after 5 PM, schedule for next business day
+    if (currentHour >= 17) {
+      eventDate.setDate(eventDate.getDate() + 1)
+      // If it's Friday after 5 PM, schedule for Monday
+      if (eventDate.getDay() === 6) { // Saturday
+        eventDate.setDate(eventDate.getDate() + 2)
+      } else if (eventDate.getDay() === 0) { // Sunday
+        eventDate.setDate(eventDate.getDate() + 1)
+      }
+    }
+    
+    // Format date for all-day event
+    const eventDateStr = eventDate.toISOString().split('T')[0]
+    
+    const event = {
+      summary: `Free Estimate - ${data.name}`,
+      description: `New service request from website:
+      
+Name: ${data.name}
+Phone: ${data.phone}
+Email: ${data.email}
+Services: ${data.services}
+Message: ${data.message}
+
+Submitted: ${new Date().toLocaleString()}`,
+      start: {
+        date: eventDateStr
+      },
+      end: {
+        date: eventDateStr
+      }
+    }
+
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?key=${API_KEY}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(event)
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error(`Calendar API error: ${response.status}`)
+      }
+
+      const result = await response.json()
+      console.log('Calendar event created:', result)
+      return result
+    } catch (error) {
+      console.error('Error creating calendar event:', error)
+      throw error
     }
   }
 
