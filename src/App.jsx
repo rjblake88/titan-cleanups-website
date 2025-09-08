@@ -339,7 +339,7 @@ function App() {
               <div className="rounded-lg overflow-hidden card-depth border border-white/10">
                 <img 
                   src={services[activeService].image} 
-                  alt={services[activeService].title}
+                  alt={`${services[activeService].title} - Professional ${services[activeService].title.toLowerCase()} services in Sacramento by Titan Cleanups`}
                   className="w-full h-96 object-cover"
                 />
               </div>
@@ -364,7 +364,7 @@ function App() {
             {galleryItems.map((item, index) => (
               <Card key={index} className="bg-gray-800 border-white/20 overflow-hidden hover:border-green-500 transition-all card-depth">
                 <div className="relative">
-                  <img src={item.image} alt={item.title} className="w-full h-64 object-cover" />
+                  <img src={item.image} alt={`${item.title} - ${item.subtitle} by Titan Cleanups in Sacramento, CA`} className="w-full h-64 object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 text-white">
                     <h3 className="text-xl font-bold">{item.title}</h3>
