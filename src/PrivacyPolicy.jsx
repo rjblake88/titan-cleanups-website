@@ -84,7 +84,7 @@ function PrivacyPolicy() {
               <li>Non-discrimination for exercising your privacy rights</li>
             </ul>
             <p className="mt-4">
-              To exercise these rights, contact us at ryan@titancleanups.com or (916) 269-3491.
+              To exercise these rights, contact us at ryan@titancleanups.com or (916) 538-9722.
             </p>
           </section>
 
@@ -104,7 +104,7 @@ function PrivacyPolicy() {
             <div className="bg-gray-800 p-4 rounded-lg">
               <p><strong>Titan Cleanups</strong></p>
               <p>Email: ryan@titancleanups.com</p>
-              <p>Phone: (916) 269-3491</p>
+              <p>Phone: (916) 538-9722</p>
               <p>Service Area: Sacramento, CA and surrounding areas</p>
             </div>
           </section>

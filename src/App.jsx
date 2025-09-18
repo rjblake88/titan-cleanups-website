@@ -219,7 +219,7 @@ function App() {
               </nav>
               <div className="flex items-center space-x-2 text-gray-300">
                 <Phone className="w-4 h-4" />
-                <span className="font-semibold">(916) 269-3491</span>
+                <span className="font-semibold">(916) 538-9722</span>
               </div>
               <Button className="bg-green-500 hover:bg-green-400 text-black font-bold px-4 py-2 transform hover:scale-105 transition-all shadow-lg btn-sharp">
                 Free Estimate
@@ -248,7 +248,7 @@ function App() {
                 <a href="#contact" className="text-gray-300 hover:text-green-400 transition-colors font-medium" onClick={() => setMobileMenuOpen(false)}>Contact</a>
                 <div className="flex items-center space-x-2 text-gray-300 pt-2">
                   <Phone className="w-4 h-4" />
-                  <span className="font-semibold">(916) 269-3491</span>
+                  <span className="font-semibold">(916) 538-9722</span>
                 </div>
                 <Button className="bg-green-500 hover:bg-green-400 text-black font-bold w-fit btn-sharp">
                   Free Estimate
@@ -638,7 +638,7 @@ function App() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-black text-white hover:bg-gray-800 px-8 py-4 text-lg transform hover:scale-105 transition-all font-bold shadow-xl btn-sharp">
               <Phone className="w-5 h-5 mr-2" />
-              Call (916) 269-3491
+              Call (916) 538-9722
             </Button>
             <Button size="lg" variant="outline" className="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-4 text-lg transform hover:scale-105 transition-all font-bold btn-sharp">
               Schedule Free Estimate
@@ -677,7 +677,7 @@ function App() {
               <div className="space-y-3 text-gray-400">
                 <div className="flex items-center space-x-2">
                   <Phone className="w-4 h-4" />
-                  <span>(916) 269-3491</span>
+                  <span>(916) 538-9722</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <MapPin className="w-4 h-4" />
@@ -720,10 +720,10 @@ function App() {
               <h3 className="text-xl font-bold text-white mb-2">Call Us Now</h3>
               <p className="text-gray-400 mb-4">Ready to get started? Give us a call!</p>
               <a 
-                href="tel:+19162693491" 
+                href="tel:+19165389722" 
                 className="text-2xl font-bold text-green-400 hover:text-green-300 transition-colors"
               >
-                (916) 269-3491
+                (916) 538-9722
               </a>
               <div className="mt-6">
                 <Button 
@@ -800,7 +800,7 @@ function App() {
                     <li>Opt-out of the sale of personal information (we do not sell personal information)</li>
                     <li>Non-discrimination for exercising your privacy rights</li>
                   </ul>
-                  <p className="mt-3">To exercise these rights, contact us at ryan@titancleanups.com or (916) 269-3491.</p>
+                  <p className="mt-3">To exercise these rights, contact us at ryan@titancleanups.com or (916) 538-9722.</p>
                 </section>
 
                 <section>
@@ -808,7 +808,7 @@ function App() {
                   <div className="bg-gray-700 p-4 rounded-lg">
                     <p><strong>Titan Cleanups</strong></p>
                     <p>Email: ryan@titancleanups.com</p>
-                    <p>Phone: (916) 269-3491</p>
+                    <p>Phone: (916) 538-9722</p>
                     <p>Service Area: Sacramento, CA and surrounding areas</p>
                   </div>
                 </section>
@@ -894,7 +894,7 @@ function App() {
                   <div className="bg-gray-700 p-4 rounded-lg">
                     <p><strong>Titan Cleanups</strong></p>
                     <p>Email: ryan@titancleanups.com</p>
-                    <p>Phone: (916) 269-3491</p>
+                    <p>Phone: (916) 538-9722</p>
                     <p>Service Area: Sacramento, CA and surrounding areas</p>
                   </div>
                 </section>
